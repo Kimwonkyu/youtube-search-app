@@ -27,6 +27,8 @@ function App() {
 
     try {
       const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+      console.log('API URL:', API_BASE_URL); // 디버깅용
+      
       const response = await fetch(`${API_BASE_URL}/search?keyword=${encodeURIComponent(keyword)}&language_filter=${languageFilter}`);
       
       if (!response.ok) {
@@ -37,6 +39,7 @@ function App() {
       setVideos(data.videos || []);
       setTotalCount(data.total_count || 0);
     } catch (err) {
+      console.error('Search error:', err); // 디버깅용
       setError(err.message);
     } finally {
       setLoading(false);
@@ -99,11 +102,20 @@ function App() {
       alert(data.message);
       setSelectedVideos([]);
     } catch (err) {
+      console.error('Save error:', err); // 디버깅용
       setError(err.message);
     } finally {
       setSaving(false);
     }
   };
+
+  // 디버깅용 정보 표시
+  console.log('App rendered:', {
+    API_URL: process.env.REACT_APP_API_URL,
+    videosCount: videos.length,
+    currentPage,
+    totalPages
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -112,6 +124,12 @@ function App() {
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             YouTube 키워드 영상 링크 수집
           </h1>
+          
+          {/* 디버깅 정보 표시 */}
+          <div className="mb-4 p-2 bg-gray-100 text-sm text-gray-600 rounded">
+            <p>API URL: {process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'}</p>
+            <p>환경: {process.env.NODE_ENV || 'development'}</p>
+          </div>
           
           <form onSubmit={handleSearch} className="mb-6">
             <div className="flex gap-4 mb-4">
