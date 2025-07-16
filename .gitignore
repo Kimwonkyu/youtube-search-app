@@ -64,7 +64,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build outputs
-build/
+# build/  # 주석 처리 - Vercel에서 빌드 확인용
 dist/
 *.tgz
 *.tar.gz
