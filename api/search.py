@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Query, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from http.server import BaseHTTPRequestHandler
+from urllib.parse import urlparse, parse_qs
+import json
 import os
 import sys
 import traceback
@@ -14,26 +15,50 @@ except ImportError:
     sys.path.append('.')
     from youtube_search import search_youtube_links
 
-app = FastAPI()
-
-# CORS 설정
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.get("/")
-def search(keyword: str = Query(...), language_filter: str = Query("korean")):
-    try:
-        videos = search_youtube_links(keyword, language_filter=language_filter, max_results=200)
-        return {"keyword": keyword, "videos": videos, "total_count": len(videos)}
-    except Exception as e:
-        print(f"Error: {e}")
-        print(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=str(e))
-
-# Vercel에서 함수로 export
-handler = app
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        try:
+            # CORS 헤더 설정
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+            self.end_headers()
+            
+            # URL 파싱
+            parsed_url = urlparse(self.path)
+            query_params = parse_qs(parsed_url.query)
+            
+            keyword = query_params.get('keyword', [None])[0]
+            language_filter = query_params.get('language_filter', ['korean'])[0]
+            
+            if not keyword:
+                response = {"error": "키워드가 필요합니다."}
+                self.wfile.write(json.dumps(response).encode())
+                return
+            
+            # YouTube 검색 수행
+            videos = search_youtube_links(keyword, language_filter=language_filter, max_results=200)
+            response = {"keyword": keyword, "videos": videos, "total_count": len(videos)}
+            
+            self.wfile.write(json.dumps(response).encode())
+            
+        except Exception as e:
+            print(f"Error: {e}")
+            print(traceback.format_exc())
+            
+            self.send_response(500)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            
+            response = {"error": str(e)}
+            self.wfile.write(json.dumps(response).encode())
+    
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
