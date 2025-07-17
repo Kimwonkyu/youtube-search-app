@@ -131,6 +131,7 @@ function App() {
             <p>환경: {process.env.NODE_ENV || 'development'}</p>
             <p>배포 시간: {new Date().toLocaleString()}</p>
             <p>빌드 테스트: v2.0</p>
+            <p>실제 사용 URL: {process.env.REACT_APP_API_URL ? 'Railway 백엔드' : '로컬 개발'}</p>
           </div>
           
           <form onSubmit={handleSearch} className="mb-6">
