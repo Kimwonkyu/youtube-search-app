@@ -26,7 +26,7 @@ function App() {
     setCurrentPage(1);
 
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://web-production-a548.up.railway.app';
       console.log('API URL:', API_BASE_URL); // 디버깅용
       
       const response = await fetch(`${API_BASE_URL}/search?keyword=${encodeURIComponent(keyword)}&language_filter=${languageFilter}`);
@@ -82,7 +82,7 @@ function App() {
     setError('');
 
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://web-production-a548.up.railway.app';
       const response = await fetch(`${API_BASE_URL}/save-selected`, {
         method: 'POST',
         headers: {
@@ -127,7 +127,7 @@ function App() {
           
           {/* 디버깅 정보 표시 */}
           <div className="mb-4 p-2 bg-gray-100 text-sm text-gray-600 rounded">
-            <p>API URL: {process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'}</p>
+            <p>API URL: {process.env.REACT_APP_API_URL || 'https://web-production-a548.up.railway.app'}</p>
             <p>환경: {process.env.NODE_ENV || 'development'}</p>
             <p>배포 시간: {new Date().toLocaleString()}</p>
             <p>빌드 테스트: v2.0</p>
