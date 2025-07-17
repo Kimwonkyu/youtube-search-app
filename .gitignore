@@ -39,7 +39,7 @@ venv.bak/
 # Google Credentials (중요!)
 credentials.json
 service-account.json
-*.json
+# *.json  # 주석 처리 - package.json은 필요함
 
 # IDE
 .vscode/
