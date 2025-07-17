@@ -7,7 +7,8 @@ echo "=================================="
 echo "📡 백엔드 서버 시작 중..."
 cd /Users/wonkyukim/PythonWorkspace/Youtube/Youtube
 source venv/bin/activate
-uvicorn main:app --reload --host 0.0.0.0 --port 8000 &
+# uvicorn main:app --reload --host 0.0.0.0 --port 8000 &
+echo "⚠️  로컬 개발용 스크립트입니다. Vercel 배포에서는 사용되지 않습니다."
 BACKEND_PID=$!
 
 echo "✅ 백엔드 서버 시작됨 (PID: $BACKEND_PID)"
