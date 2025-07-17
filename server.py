@@ -145,6 +145,7 @@ def run_server():
     print(f"📁 Working directory: {os.getcwd()}")
     print(f"🐍 Python version: {sys.version}")
     print(f"📦 Modules loaded: {MODULES_LOADED}")
+    print(f"🌐 CORS configured for Vercel: https://youtube-search-app-henna.vercel.app")
     
     server = HTTPServer(('0.0.0.0', port), APIHandler)
     
