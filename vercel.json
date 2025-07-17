@@ -9,14 +9,22 @@
       }
     },
     {
-      "src": "main.py",
+      "src": "api/search.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/save-selected.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "main.py"
+      "src": "/api/search",
+      "dest": "api/search.py"
+    },
+    {
+      "src": "/api/save-selected",
+      "dest": "api/save-selected.py"
     },
     {
       "src": "/(.*)",
