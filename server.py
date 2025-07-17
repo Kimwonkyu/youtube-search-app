@@ -40,7 +40,12 @@ class APIHandler(BaseHTTPRequestHandler):
         self.end_headers()
     
     def send_cors_headers(self):
-        self.send_header('Access-Control-Allow-Origin', '*')
+        # Vercel 프론트엔드 도메인 허용
+        origin = self.headers.get('Origin')
+        if origin and (origin == 'https://youtube-search-app-henna.vercel.app' or origin.startswith('http://localhost')):
+            self.send_header('Access-Control-Allow-Origin', origin)
+        else:
+            self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
     
