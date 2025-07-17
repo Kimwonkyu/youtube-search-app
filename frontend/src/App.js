@@ -129,6 +129,7 @@ function App() {
           <div className="mb-4 p-2 bg-gray-100 text-sm text-gray-600 rounded">
             <p>API URL: {process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'}</p>
             <p>환경: {process.env.NODE_ENV || 'development'}</p>
+            <p>배포 시간: {new Date().toLocaleString()}</p>
           </div>
           
           <form onSubmit={handleSearch} className="mb-6">
